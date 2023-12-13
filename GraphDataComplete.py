@@ -20,12 +20,22 @@ def check_mane_select(feature):
         return False
     return False
 
-# get the class of the mutation
-# TODO: handle the different types of mutations
+def name_constructor(coding_change):
+    type = coding_change.split("	")[9]
+    amino = coding_change.split("	")[17]
+    #handle the case where there is no amino acid change
+    if amino != "-":
+        before_amino = amino.split("/")[0]  
+        after_amino = amino.split("/")[1]
+        amino_position = coding_change.split("	")[16]
+        return "p."+before_amino+amino_position+after_amino
+    return type
+
 def class_constructor(coding_change):
     variant = coding_change.split("	")[3]
+    # RIGHT NOW THIS, treat these three as LGD, label as F
     if "frameshift_variant" in variant or "stop_gained" in variant or "splice" in variant:
-        return "LGN"
+        return "F"
     if variant == "missense_variant":
         return "M"
     else :
@@ -59,18 +69,6 @@ file.close()
 
 # close the browser
 driver.quit()
-
-# get the name of the mutation
-def name_constructor(coding_change):
-    type = coding_change.split("	")[9]
-    amino = coding_change.split("	")[17]
-    #handle the case where there is no amino acid change
-    if amino != "-":
-        before_amino = amino.split("/")[0]  
-        after_amino = amino.split("/")[1]
-        amino_position = coding_change.split("	")[16]
-        return "p."+before_amino+amino_position+after_amino
-    return type
 
 # Read the data from the txt file
 with open('Mane_select.txt', 'r') as file:

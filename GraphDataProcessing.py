@@ -11,8 +11,9 @@ def name_constructor(coding_change):
 
 def class_constructor(coding_change):
     variant = coding_change.split("	")[3]
+    # RIGHT NOW THIS, treat these three as LGD, label as F
     if "frameshift_variant" in variant or "stop_gained" in variant or "splice" in variant:
-        return "LGN"
+        return "F"
     if variant == "missense_variant":
         return "M"
     else :
